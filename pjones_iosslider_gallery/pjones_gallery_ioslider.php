@@ -68,7 +68,9 @@ class pjones_iosslider_gallery {
 
 		$output = <<<html
 		<!-- slider container -->
-		<div class = 'iosSlider'>
+		<div class = 'iosSlider iosSlider-instance-{$id}'>
+
+
 			<!-- slider -->
 			<div class = 'slider'>	
 html;
@@ -92,59 +94,33 @@ html;
 html;
 		}
 	
-	    $output .= '</div></div>';
+	    $output .= <<<html
+			</div>
+
+			<div class='prevButton'></div>
+			<div class='nextButton'></div>
+		</div>
+html;
+
 		$output .= <<<html
-		<script src="http://www.iosscripts.com/iosslider/_js/jquery.iosslider.min.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			if(window.jQuery) {
 				jQuery(document).ready(function() {
 					/* basic - default settings */
-					jQuery('.iosSlider').iosSlider({
+					jQuery('.iosSlider-instance-{$id}').iosSlider({
 						snapToChildren: true,
 						desktopClickDrag: true,
-						infiniteSlider: true						
+						infiniteSlider: true,
+						navPrevSelector: jQuery('.iosSlider-instance-{$id} .prevButton'),
+						navNextSelector: jQuery('.iosSlider-instance-{$id} .nextButton')		
 					});
 				});
 			}
 		</script>
-		<style type="text/css">
-			/* slider container */
-			.iosSlider {
-				/* required */
-				position: relative;
-				top: 0;
-				left: 0;
-				overflow: hidden;
-	
-				width: 600px;
-				height: 400px;
-				margin-bottom: 1em;
-			}
-
-			/* slider */
-			.iosSlider .slider {
-				/* required */
-				width: 100%;
-				height: 100%;
-			}
-
-			/* slide */
-			.iosSlider .slider .slide {
-				/* required */
-				float: left;
-
-				width: 600px;
-				height: 400px;
-			}
-			.iosSlider .slider .slide img {
-				max-width: 589px;
-				max-height: 400px;
-				display: block;
-				margin: 0 auto;
-			}
-
-		</style>
 html;
+		wp_enqueue_script('pjones_iosslider_easing', plugins_url('js/jquery.easing-1.3.js', __FILE__));
+		wp_enqueue_script('pjones_iosslider_script', plugins_url('js/jquery.iosslider.min.js', __FILE__));
+		wp_enqueue_style('pjones_iosslider_css', plugins_url('css/pjones_iosslider.css', __FILE__));
 		return $output;
 	}
 }
